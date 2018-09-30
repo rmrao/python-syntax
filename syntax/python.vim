@@ -88,6 +88,7 @@ if s:Python2Syntax()
 else
   syn keyword pythonStatement   as nonlocal
   syn match   pythonStatement   '\v\.@<!<await>'
+  syn match   pythonFunctionCall   '\v([^[:cntrl:][:space:][:punct:][:digit:]]|_)([^[:cntrl:][:punct:][:space:]]|_)*\ze(\s?\()' display
   syn match   pythonFunction    '\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*' display contained
   syn match   pythonStatement   '\<async\s\+def\>' nextgroup=pythonFunction skipwhite
   syn match   pythonStatement   '\<async\s\+with\>'
@@ -385,6 +386,27 @@ if s:Enabled('g:python_highlight_exceptions')
   unlet s:exs_re
 endif
 
+" Builtin exceptions and warnings
+syn keyword pythonExClass   BaseException
+syn keyword pythonExClass   Exception StandardError ArithmeticError
+syn keyword pythonExClass   LookupError EnvironmentError
+syn keyword pythonExClass   AssertionError AttributeError BufferError EOFError
+syn keyword pythonExClass   FloatingPointError GeneratorExit IOError
+syn keyword pythonExClass   ImportError IndexError KeyError
+syn keyword pythonExClass   KeyboardInterrupt MemoryError NameError
+syn keyword pythonExClass   NotImplementedError OSError OverflowError
+syn keyword pythonExClass   ReferenceError RuntimeError StopIteration
+syn keyword pythonExClass   SyntaxError IndentationError TabError
+syn keyword pythonExClass   SystemError SystemExit TypeError
+syn keyword pythonExClass   UnboundLocalError UnicodeError
+syn keyword pythonExClass   UnicodeEncodeError UnicodeDecodeError
+syn keyword pythonExClass   UnicodeTranslateError ValueError VMSError
+syn keyword pythonExClass   WindowsError ZeroDivisionError
+syn keyword pythonExClass   Warning UserWarning BytesWarning DeprecationWarning
+syn keyword pythonExClass   PendingDepricationWarning SyntaxWarning
+syn keyword pythonExClass   RuntimeWarning FutureWarning
+syn keyword pythonExClass   ImportWarning UnicodeWarning
+
 if s:Enabled('g:python_slow_sync')
   syn sync minlines=2000
 else
@@ -407,10 +429,12 @@ if v:version >= 508 || !exists('did_python_syn_inits')
   HiLink pythonRaiseFromStatement   Statement
   HiLink pythonImport           Include
   HiLink pythonFunction         Function
+  HiLink pythonFunctionCall     Identifier
   HiLink pythonConditional      Conditional
   HiLink pythonRepeat           Repeat
   HiLink pythonException        Exception
   HiLink pythonOperator         Operator
+  HiLink pythonExClass          Special
 
   HiLink pythonDecorator        Define
   HiLink pythonDottedName       Function
